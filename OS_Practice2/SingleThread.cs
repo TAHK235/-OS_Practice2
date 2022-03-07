@@ -38,6 +38,7 @@ namespace OS_Practice2
                                 {
                                     Console.WriteLine($"Найден пароль {password}, hash {hashed}");
                                     Console.WriteLine(DateTime.Now - start);
+                                    ch1 = ch2 = ch3 = ch4 = ch5 = length;
                                 }
                             }
                         }
@@ -75,12 +76,13 @@ namespace OS_Practice2
                                         Console.WriteLine($"Найден пароль {password}, hash {Hash.GetStringSha256Hash(password)}");
                                         Console.WriteLine(DateTime.Now - start);
                                         count++;
+                                        break;
                                     }
                                 }
 
                                 if (count == File.ReadAllLines(path).Length)
                                 {
-                                    break;
+                                    ch1 = ch2 = ch3 = ch4 = ch5 = length;
                                 }
                             }
                         }

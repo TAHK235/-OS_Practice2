@@ -37,12 +37,15 @@ namespace OS_Practice2
                     case "2":
                         if (flag)
                         {
+                            // MultiThreading.SetThread();
                             string hash = HashEnter();
+                            //MultiThreading.NewThread(hash.ToUpper());
                             MultiThreading.BruteHash(hash.ToUpper());
                         }
                         else
                         {
-
+                            string path = HashesReadFromFile();
+                            MultiThreading.BruteHashFromFile(path);
                         }
 
                         break;
