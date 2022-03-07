@@ -1,39 +1,31 @@
 ﻿using System;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace OS_Practice2
 {
     internal static class MultiThreading
     {
-        private static readonly char[] Dictionary =
+        internal static void BruteHash(string hash)
         {
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-            'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-            's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-        };
-
-        private static readonly int Len = Dictionary.Length;
-
-        internal static int SetThread()
-        {
-            while (true)
+            DateTime start = DateTime.Now;
+            Parallel.For(0, 26, a =>
             {
-                Console.WriteLine("Введите количество потоков");
-                string input = Console.ReadLine();
-                if (int.TryParse(input, out int count))
+                byte[] password = new byte[5];
+                password[0] = (byte) (97 + a);
+                for (password[1] = 97; password[1] < 123; password[1]++)
+                for (password[2] = 97; password[2] < 123; password[2]++)
+                for (password[3] = 97; password[3] < 123; password[3]++)
+                for (password[4] = 97; password[4] < 123; password[4]++)
                 {
-                    if (count < 2 || count > Len)
-                    {
-                        Console.WriteLine($"Потоков должно быть больше 1 и не больше {Len}");
-                        SetThread();
-                    }
-                    else
-                    {
-                        int threads = Len / count;
-                        Console.WriteLine(threads);
-                        return threads;
-                    }
+                    string passwordString = Encoding.ASCII.GetString(password);
+                    string hashed = Hash.GetStringSha256Hash(passwordString);
+                    if (hash != hashed) continue;
+
+                    Console.WriteLine($"Найден пароль {passwordString}, hash {hashed}");
+                    Console.WriteLine(DateTime.Now - start);
                 }
-            }
+            });
         }
     }
 }
