@@ -47,7 +47,6 @@ namespace OS_Practice2
         internal static void BruteHashFromFile(string path)
         {
             bool flag = false;
-            File.Copy(path, path = @".\temp.txt");
             DateTime start = DateTime.Now;
             Parallel.For(0, 26, a =>
             {
@@ -65,15 +64,15 @@ namespace OS_Practice2
                                 string passwordString = Encoding.ASCII.GetString(password);
                                 string hash = Hash.GetStringSha256Hash(passwordString);
                                 foreach (string line in File.ReadLines(path, Encoding.Default))
-                                    if (line.ToUpper().Contains(hash))
-                                    {
-                                        Console.WriteLine($"Найден пароль {passwordString}, hash {Hash.GetStringSha256Hash(passwordString)}");
-                                        Console.WriteLine(DateTime.Now - start);
-                                        count++;
-                                        if (count == File.ReadAllLines(path).Length) flag = true;
+                                {
+                                    if (!line.ToUpper().Contains(hash)) continue;
 
-                                        break;
-                                    }
+                                    Console.WriteLine($"Найден пароль {passwordString}, hash {hash}");
+                                    Console.WriteLine(DateTime.Now - start);
+                                    count++;
+                                    if (count == File.ReadAllLines(path).Length) flag = true;
+                                    break;
+                                }
 
                                 if (flag) break;
                             }
@@ -87,8 +86,6 @@ namespace OS_Practice2
                     if (flag) break;
                 }
             });
-
-            File.Delete(@".\temp.txt");
         }
     }
 }

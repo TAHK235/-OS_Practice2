@@ -51,6 +51,7 @@ namespace OS_Practice2
         {
             DateTime start = DateTime.Now;
             int length = Dictionary.Length;
+            int count = 0;
             for (int ch1 = 0; ch1 < length; ch1++)
             {
                 string a = Convert.ToString(Dictionary[ch1]);
@@ -65,19 +66,17 @@ namespace OS_Practice2
                             string d = Convert.ToString(Dictionary[ch4]);
                             for (int ch5 = 0; ch5 < length; ch5++)
                             {
-                                int count = 0;
                                 string e = Convert.ToString(Dictionary[ch5]);
                                 string password = a + b + c + d + e;
                                 string hash = Hash.GetStringSha256Hash(password);
                                 foreach (string line in File.ReadLines(path, Encoding.Default))
                                 {
-                                    if ((line.ToUpper()).Contains(hash))
-                                    {
-                                        Console.WriteLine($"Найден пароль {password}, hash {Hash.GetStringSha256Hash(password)}");
-                                        Console.WriteLine(DateTime.Now - start);
-                                        count++;
-                                        break;
-                                    }
+                                    if (!line.ToUpper().Contains(hash)) continue;
+
+                                    Console.WriteLine($"Найден пароль {password}, hash {hash}");
+                                    Console.WriteLine(DateTime.Now - start);
+                                    count++;
+                                    break;
                                 }
 
                                 if (count == File.ReadAllLines(path).Length)
